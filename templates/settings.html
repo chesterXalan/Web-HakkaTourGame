@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <title>{{ title }}</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <style>
+    body {
+      background-color: #2c2c2c;
+      color: white;
+    }
+
+    .grid-ui {
+      display: grid;
+      grid-template-rows: auto auto;
+      justify-content: center;
+      transform: translateY(30%);
+      justify-items: center;
+    }
+
+    .grid-setting-container {
+      display: grid;
+      grid-template-rows: auto auto auto auto auto auto;
+      gap: 10%;
+      border: 2px solid white;
+      border-radius: 10px;
+      padding-top: 5%;
+      padding-left: 5%;
+      padding-right: 5%;
+      padding-bottom: 25%;
+    }
+    .grid-setting-area {
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-self: left;
+      gap: 5%;
+    }
+
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 5%;
+    }
+
+    .inputbox {
+      font-size: x-large;
+      border-radius: 10px;
+      width: 20%;
+      height: 100%;
+    }
+    .checkbox {
+      width: 100%;
+      height: 100%;
+    }
+
+    label {
+      font-size: x-large;
+      white-space: nowrap;
+    }
+
+    button {
+      font-size: x-large;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    button:hover {
+      background-color: #ffc037;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-ui">
+    <h1 id="title">遊戲設定</h1>
+    <div class="grid-setting-container">
+      <div class="grid-setting-area">
+        <label>縣市數量 (最多22個)</label>
+        <input id="num_county" class="inputbox" maxlength="2">
+      </div>
+      <div class="grid-setting-area">
+        <label>景點數量 (最多10個)</label>
+        <input id="num_attr" class="inputbox" maxlength="2">
+      </div>
+      <div class="grid-setting-area">
+        <label>強制語音輸入</label>
+        <input id="force_voice_input" class="checkbox" type="checkbox">
+      </div>
+      <div class="grid-setting-area">
+        <label>自動撥放語音</label>
+        <input id="auto_play_voice" class="checkbox" type="checkbox">
+      </div>
+      <div class="grid-setting-area">
+        <label>自動開始遊戲</label>
+        <input id="auto_start_game" class="checkbox" type="checkbox">
+      </div>
+      <div class="grid-buttons">
+        <button id="save" type="button" onclick="saveSettings()">保存</button>
+        <button id="cancel" type="button" onclick="goToHomepage()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // 切換至首頁
+    function goToHomepage() {
+      window.location.href = '/';
+    }
+    // 讀取設定
+    function loadSettings() {
+      if (sessionStorage.length !== 0) {
+        document.querySelector('#num_county').value = sessionStorage.getItem('num_county');
+        document.querySelector('#num_attr').value = sessionStorage.getItem('num_attr');
+        document.querySelector('#force_voice_input').checked = JSON.parse(sessionStorage.getItem('force_voice_input')); // 'true' -> true
+        document.querySelector('#auto_play_voice').checked = JSON.parse(sessionStorage.getItem('auto_play_voice'));
+        document.querySelector('#auto_start_game').checked = JSON.parse(sessionStorage.getItem('auto_start_game'));
+      } else {
+        goToHomepage();
+      }
+    }
+    // 保存設定
+    function saveSettings() {
+      sessionStorage.setItem('num_county', document.querySelector('#num_county').value);
+      sessionStorage.setItem('num_attr', document.querySelector('#num_attr').value);
+      sessionStorage.setItem('force_voice_input', document.querySelector('#force_voice_input').checked);
+      sessionStorage.setItem('auto_play_voice', document.querySelector('#auto_play_voice').checked);
+      sessionStorage.setItem('auto_start_game', document.querySelector('#auto_start_game').checked);
+      goToHomepage();
+    }
+  </script>
+  <script>
+    // 設定數字範圍
+    const numCounty = document.querySelector('#num_county');
+    const numAttr = document.querySelector('#num_attr');
+    numCounty.addEventListener('input', function() {
+      if (parseInt(numCounty.value) > 22) {
+        numCounty.value = '22';
+      } else if (parseInt(numCounty.value) < 2){
+        numCounty.value = '2';
+      }
+    });
+    numAttr.addEventListener('input', function() {
+      if (parseInt(numAttr.value) > 10) {
+        numAttr.value = '10';
+      } else if (parseInt(numAttr.value) < 2){
+        numAttr.value = '2';
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSettings();
+    });
+  </script>
+</body>
+</html>

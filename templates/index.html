@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <title>{{ title }}</title>
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:image" content="/favicon.ico">
+  <meta property="og:description" content="{{ description }}">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <style>
+    body {
+      background-color: #2c2c2c;
+      color: white;
+    }
+
+    .grid-ui {
+      display: grid;
+      grid-template-rows: auto auto;
+      justify-content: center;
+      transform: translateY(60%);
+      gap: 10%;
+    }
+    .grid-button-container {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 25%;
+      border: 2px solid white;
+      border-radius: 10px;
+      padding-top: 10%;
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-bottom: 20%;
+    }
+
+    button {
+      font-size: xx-large;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      white-space: nowrap;
+    }
+    button:hover {
+      background-color: #ffc037;
+    }
+
+    #version {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      font-size: large;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-ui">
+    <h1 id="title">{{ title }}</h1>
+    <div class="grid-button-container">
+      <button id="game" type="button" onclick="goToPage('/game')">開始遊戲</button>
+      <button id="settings" type="button" onclick="goToPage('/settings')">遊戲設定</button>
+    </div>
+  </div>
+
+  <div id="version">version: {{ version }}</div>
+
+  <!-- JavaScript -->
+  <script>
+    function loadSettings() {
+      if (sessionStorage.length === 0) {
+        sessionStorage.setItem('num_county', '10'); // 縣市數量
+        sessionStorage.setItem('num_attr', '4'); // 景點數量
+        sessionStorage.setItem('force_voice_input', 'false'); // 強制語音輸入
+        sessionStorage.setItem('auto_play_voice', 'false'); // 自動撥放語音
+        sessionStorage.setItem('auto_start_game', 'false'); // 自動開始遊戲
+      } else {
+        sessionStorage.getItem('num_county');
+        sessionStorage.getItem('num_attr');
+        sessionStorage.getItem('force_voice_input');
+        sessionStorage.getItem('auto_play_voice');
+        sessionStorage.getItem('auto_start_game');
+      }
+    }
+    function goToPage(url) {
+      window.location.href = url; // 切換至指定頁面
+    }
+  </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      loadSettings(); // 預設設定或讀取設定
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+jupyterlab
+flask
+flask_socketio
+simple-websocket
+openai
+langchain
+google-search-results

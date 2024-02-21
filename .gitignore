@@ -1,0 +1,5 @@
+__pycache__
+data/api_keys
+data/chats
+static/images/taiwan_map_src.svg
+tools
