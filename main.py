@@ -1,5 +1,6 @@
 import time, random
 from flask import Flask, render_template
+from flask_wtf.csrf import CSRFProtect
 from flask_socketio import SocketIO, emit
 from core.utils import get_openai_key, get_serp_key, get_google_cloud_key
 from core.langchain_ import LangChain, StreamResponseHandler
@@ -12,6 +13,8 @@ __description = '使用ChatGPT結合客語進行台灣觀光'
 __version = '2024.0617'
 
 app = Flask(__name__)
+csrf = CSRFProtect() # CSRF protection
+csrf.init_app(app)
 socketio = SocketIO(app)
 langchain = LangChain(get_openai_key(), get_serp_key())
 hakka_apis = HakkaAPIs()
@@ -43,7 +46,7 @@ def settings():
     return render_template('settings.html', title=__title)
 
 
-def __API_WARMUP():
+def _api_warmup():
     hakka_apis.recognize_speech_test(path='./data/audios/_test-asr.wav')
     hakka_apis.text_to_speech('哈囉你好嗎？')
 
@@ -177,7 +180,7 @@ def pageClose(data):
 
 
 if __name__ == '__main__':
-    #__API_WARMUP()
+    #_api_warmup()
     socketio.run(app,
                  host='127.0.0.1',
                  port=5000,
