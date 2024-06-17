@@ -46,7 +46,7 @@ def settings():
     return render_template('settings.html', title=__title)
 
 
-def _api_warmup():
+def __api_warmup():
     hakka_apis.recognize_speech_test(path='./data/audios/_test-asr.wav')
     hakka_apis.text_to_speech('哈囉你好嗎？')
 
@@ -180,7 +180,7 @@ def page_close(data):
 
 
 if __name__ == '__main__':
-    #_api_warmup()
+    #__api_warmup()
     socketio.run(app,
                  host='127.0.0.1',
                  port=5000,
