@@ -108,25 +108,25 @@ def game_startup(data):
     emit('game_start')
 
 @socketio.on('get_user_text_input')
-def textToSpeech(data):
+def text_to_speech(data):
     user_input = data['user_input']
     audio = hakka_apis.text_to_speech(text=user_input)
     emit('user_tts', {'audio': audio})
 
 @socketio.on('get_game_text_output')
-def textToSpeech(data):
+def text_to_speech(data):
     game_output = data['game_output']
     audio = hakka_apis.text_to_speech(text=game_output)
     emit('game_tts', {'audio': audio})
 
 @socketio.on('voice_recorded')
-def speechToText(data):
+def speech_to_text(data):
     voice = data['voice']
     text = hakka_apis.recognize_speech(audio_b64=voice)
     emit('speech_to_text', {'text': text})
 
 @socketio.on('invalid_attr')
-def invalidAttr(data):
+def invalid_attr(data):
     connect_time = data['connect_time']
     county_name = county_selector.counties[user_dict[connect_time]['countyid_last']]
     emit('update_google_map', {'text': county_name})
@@ -173,7 +173,7 @@ def play(data):
         return
 
 @socketio.on('page_close')
-def pageClose(data):
+def page_close(data):
     connect_time = data['connect_time']
     langchain.save_chain_history(user_dict[connect_time]['game'], connect_time)
     del user_dict[connect_time] # delete key
