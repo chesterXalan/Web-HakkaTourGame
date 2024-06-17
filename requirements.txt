@@ -1,7 +1,6 @@
-jupyterlab
 flask
 flask_socketio
 simple-websocket
 openai
-langchain
+langchain-community
 google-search-results

@@ -32,7 +32,7 @@ class LangChain():
         self.chats_dir = Path('./data/chats')
         self.chats_dir.mkdir(parents=True, exist_ok=True)
 
-    def promptGame(self, num_county, num_attr):
+    def prompt_game(self, num_county, num_attr):
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 '你是一位文字冒險遊戲設計師，請設計一個關於台灣觀光的文字冒險遊戲，內容包括但不限於台灣各個知名景點的介紹以及其周邊店家推薦等觀光元素，'
@@ -51,7 +51,7 @@ class LangChain():
         ])
         return prompt
 
-    def promptAttraction(self):
+    def prompt_attraction(self):
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
                 '請告訴我輸入的內容中，分別有哪些選項可以選擇，不要有選項的編號。\n'
@@ -62,7 +62,7 @@ class LangChain():
         ])
         return prompt
 
-    def chatGPT(self, model='gpt-3.5-turbo', temperature=0., streaming=False, callbacks=None):
+    def chatgpt(self, model='gpt-3.5-turbo', temperature=0., streaming=False, callbacks=None):
         llm = ChatOpenAI(openai_api_key=self.openai_key,
                          model=model,
                          temperature=temperature,
@@ -70,7 +70,7 @@ class LangChain():
                          callbacks=callbacks)
         return llm
 
-    def setChain(self, prompt, llm, agent=False):
+    def set_chain(self, prompt, llm, agent=False):
         if agent: # 還有很多問題，之後有機會再弄
             chain = initialize_agent(tools=self.tools,
                                      agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
@@ -84,10 +84,10 @@ class LangChain():
 
         return chain
 
-    def getListOutput(self, response):
+    def get_list_output(self, response):
         return CommaSeparatedListOutputParser().parse(response)
 
-    def saveChainHistory(self, chain, save_name):
+    def save_chain_history(self, chain, save_name):
         messages = chain.memory.chat_memory.messages
         if len(messages):
             with open(self.chats_dir/f'{save_name}.json', 'w', encoding='utf-8') as f:
